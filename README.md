@@ -1,7 +1,3 @@
-Voici le fichier `README.md` spécifiquement optimisé pour ta partie **Frontend (Next.js)**. Il met en avant ton architecture de dossiers, la gestion des rôles et la configuration des images.
-
----
-
 # 💻 CampusMaster Frontend - Next.js 14+
 
 L'interface utilisateur de la plateforme **CampusMaster**, développée avec **Next.js** (App Router). Cette application offre une expérience fluide, réactive et sécurisée pour les étudiants, les enseignants et les administrateurs.
