@@ -18,6 +18,8 @@ import Link from "next/link";
 import { authService } from "@/services/authService";
 import { Auth } from "@/types/userType";
 import { toast } from "sonner";
+import { Moon, Sun } from "lucide-react";
+import ThemeToggleIcon from "@/components/ui/ThemeToggleIcon";
 
 // Schéma de validation
 const loginSchema = z.object({
@@ -29,6 +31,7 @@ export default function LoginPage() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
   const {
     register,
@@ -43,6 +46,20 @@ export default function LoginPage() {
     },
   });
 
+  // Gestion du thème
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    
+    if (newTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    
+    localStorage.setItem('theme', newTheme);
+  };
+
   const onSubmit = async (data: Auth) => {
     setIsLoading(true);
 
@@ -51,7 +68,7 @@ export default function LoginPage() {
       
       // Message de succès
       toast.success("Connexion réussie !", {
-        description: `Bienvenue ${response.user?.firstName || ''}`,
+        description: `Bienvenue ${response.user?.first_name || ''}`,
         duration: 3000,
       });
       
@@ -63,22 +80,18 @@ export default function LoginPage() {
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Redirection selon le rôle
-      if (response.user?.role) {
-        switch(response.user.role) {
+      if (response.user?.user_type) {
+        switch(response.user.user_type) {
           case 'admin':
-            router.push('/dashboard/admin');
+            router.push('/admin');
             break;
           case 'teacher':
-            router.push('/dashboard/teacher');
+            router.push('/teacher');
             break;
           case 'student':
-            router.push('/dashboard/student');
+            router.push('/student');
             break;
-          default:
-            router.push('/dashboard');
         }
-      } else {
-        router.push('/dashboard');
       }
       
       router.refresh();
@@ -149,33 +162,47 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white px-4 py-8">
-      <div className="w-full max-w-[448px]">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4 py-8 transition-colors duration-300">
+      {/* Header avec toggle du thème */}
+      <div className="absolute top-6 right-6">
+        <ThemeToggleIcon />
+      </div>
+
+      <div className="w-full max-w-[448px] mt-16">
         {/* Logo and Header */}
         <div className="flex flex-col items-center mb-8">
           {/* Logo */}
           <div className="relative w-16 h-16 mb-5">
-            <div className="w-16 h-16 bg-[#1E40AF] rounded-xl"></div>
+            <div className="w-16 h-16 bg-primary rounded-xl transition-colors duration-300"></div>
             <div className="absolute top-3 left-3 w-10 h-10 text-white">
               <HiOutlineAcademicCap className="w-10 h-10" />
             </div>
           </div>
 
           {/* Title */}
-          <h1 className="text-[30px] leading-9 font-bold text-[#1F2937] text-center mb-3">
+          <h1 className="text-[30px] leading-9 font-bold text-foreground text-center mb-3 transition-colors duration-300">
             CampusMaster
           </h1>
 
           {/* Subtitle */}
-          <p className="text-base leading-6 text-[#6B7280] text-center max-w-[338px]">
-            Plateforme de gestion éducative pour Master 2
+          <p className="text-base leading-6 text-muted text-center max-w-[338px] transition-colors duration-300">
+            Plateforme de gestion éducative pour Master
           </p>
         </div>
 
         {/* Login Card */}
-        <div className="w-full border border-[#E5E7EB] rounded-lg bg-white shadow-[0_4px_6px_0_rgba(0,0,0,0.07),0_2px_4px_0_rgba(0,0,0,0.05)] p-8">
+        <div className="
+          w-full 
+          border border-border 
+          rounded-lg 
+          bg-surface 
+          shadow-[0_4px_6px_0_rgba(0,0,0,0.07),0_2px_4px_0_rgba(0,0,0,0.05)] 
+          dark:shadow-[0_4px_6px_0_rgba(0,0,0,0.2),0_2px_4px_0_rgba(0,0,0,0.15)]
+          p-8
+          transition-all duration-300
+        ">
           {/* Card Title */}
-          <h2 className="text-2xl leading-8 font-semibold text-[#1F2937] mb-8">
+          <h2 className="text-2xl leading-8 font-semibold text-foreground mb-8 transition-colors duration-300">
             Connexion
           </h2>
 
@@ -185,25 +212,36 @@ export default function LoginPage() {
             <div>
               <label 
                 htmlFor="email"
-                className="block text-sm leading-5 text-[#1F2937] mb-2"
+                className="block text-sm leading-5 text-foreground mb-2 transition-colors duration-300"
               >
                 Adresse e-mail
               </label>
               <div className="relative">
-                <MdOutlineMail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#6B7280]" />
+                <MdOutlineMail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted transition-colors duration-300" />
                 <input
                   type="email"
                   id="email"
                   {...register("email")}
                   placeholder="votre.email@exemple.fr"
-                  className={`w-full h-[50px] pl-10 pr-4 border rounded-md bg-[#FAFBFC] text-base text-[#1F2937] placeholder:text-[#6B7280] focus:outline-none focus:ring-2 focus:ring-[#1E40AF] focus:border-transparent disabled:opacity-50 ${
-                    errors.email ? "border-red-300" : "border-[#E5E7EB]"
-                  }`}
+                  className={`
+                    w-full h-[50px] 
+                    pl-10 pr-4 
+                    border rounded-md 
+                    bg-background 
+                    text-base text-foreground 
+                    placeholder:text-muted 
+                    focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent 
+                    disabled:opacity-50
+                    transition-all duration-300
+                    ${errors.email ? "border-red-400 dark:border-red-500" : "border-border"}
+                  `}
                   disabled={isLoading}
                 />
               </div>
               {errors.email && (
-                <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+                <p className="mt-1 text-sm text-red-600 dark:text-red-400 transition-colors duration-300">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
@@ -211,26 +249,41 @@ export default function LoginPage() {
             <div>
               <label 
                 htmlFor="password"
-                className="block text-sm leading-5 text-[#1F2937] mb-2"
+                className="block text-sm leading-5 text-foreground mb-2 transition-colors duration-300"
               >
                 Mot de passe
               </label>
               <div className="relative">
-                <TbLock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#6B7280]" />
+                <TbLock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted transition-colors duration-300" />
                 <input
                   type={showPassword ? "text" : "password"}
                   id="password"
                   {...register("password")}
                   placeholder="••••••••"
-                  className={`w-full h-[50px] pl-10 pr-12 border rounded-md bg-[#FAFBFC] text-base text-[#1F2937] placeholder:text-[#6B7280] focus:outline-none focus:ring-2 focus:ring-[#1E40AF] focus:border-transparent disabled:opacity-50 ${
-                    errors.password ? "border-red-300" : "border-[#E5E7EB]"
-                  }`}
+                  className={`
+                    w-full h-[50px] 
+                    pl-10 pr-12 
+                    border rounded-md 
+                    bg-background 
+                    text-base text-foreground 
+                    placeholder:text-muted 
+                    focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent 
+                    disabled:opacity-50
+                    transition-all duration-300
+                    ${errors.password ? "border-red-400 dark:border-red-500" : "border-border"}
+                  `}
                   disabled={isLoading}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#6B7280] hover:text-[#1F2937] transition-colors"
+                  className="
+                    absolute right-3 top-1/2 transform -translate-y-1/2 
+                    w-5 h-5 
+                    text-muted 
+                    hover:text-foreground 
+                    transition-colors duration-300
+                  "
                   aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
                   disabled={isLoading}
                 >
@@ -242,14 +295,26 @@ export default function LoginPage() {
                 </button>
               </div>
               {errors.password && (
-                <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
+                <p className="mt-1 text-sm text-red-600 dark:text-red-400 transition-colors duration-300">
+                  {errors.password.message}
+                </p>
               )}
             </div>
 
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full h-12 flex items-center justify-center gap-2 bg-[#1E40AF] hover:bg-[#1a3a9e] text-white text-base rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="
+                w-full h-12 
+                flex items-center justify-center gap-2 
+                bg-primary 
+                hover:bg-primary/90 
+                text-white 
+                text-base 
+                rounded-md 
+                transition-all duration-300
+                disabled:opacity-50 disabled:cursor-not-allowed
+              "
             >
               {isLoading ? (
                 <>
@@ -269,7 +334,12 @@ export default function LoginPage() {
           <div className="mt-6 text-center">
             <Link
               href="/forgot-password"
-              className="text-sm leading-5 text-[#1E40AF] hover:text-[#1a3a9e] transition-colors"
+              className="
+                text-sm leading-5 
+                text-primary 
+                hover:text-primary/80 
+                transition-colors duration-300
+              "
             >
               Mot de passe oublié ?
             </Link>

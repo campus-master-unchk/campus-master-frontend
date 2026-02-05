@@ -3,24 +3,89 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --background-secondary: #ffffff;
+  --background-main-content: #FAFBFC;
+  --background-muted: #f9fafb6d;
+  
+  /* Variables personnalisées */
+  --color-surface: #f9fafb;
+  --color-border: #e5e7eb;
+  --color-primary: #1e40af;
+  --color-muted: #6b7280;
+
+  /* variables des couleurs de badge */
+  --color-primary-badge: #1e40af;
+  --color-success-badge: #0e8440;
+  --color-danger-badge: #dc2626;
+  --color-warning-badge: #f59e0b;
+  --color-muted-badge: #6b7280;
+
+  /* bg couleurs de badge */
+  --color-primary-badge-bg: #1e40af84;
+  --color-success-badge-bg: #0e844084;
+  --color-danger-badge-bg: #dc262684;
+  --color-warning-badge-bg: #f59e0b84;
+  --color-muted-badge-bg: #6b728084;
+}
+
+.dark {
+  --background: #0f172a;
+  --foreground: #f8fafc;
+  --background-secondary: #94A3B8;
+  --background-main-content: #0F172A;
+  --background-muted: #94a3b833;
+  
+  /* Variables pour le mode sombre */
+  --color-surface: #1e293b;
+  --color-border: #475569;
+  --color-primary: #60a5fa;
+  --color-muted: #94a3b8;
+
+  /* sombre: variables des couleurs de badge */
+  --color-primary-badge: #8ec5ff;
+  --color-success-badge: #05df72;
+  --color-danger-badge: #ff8183;
+  --color-warning-badge: #f59e0b;
+  --color-muted-badge: #6b7280;
+
+  /* sombre: bg couleurs de badge */
+  --color-primary-badge-bg: #1e40af84;
+  --color-success-badge-bg: #0e844084;
+  --color-danger-badge-bg: #dc262684;
+  --color-warning-badge-bg: #f59e0b84;
+  --color-muted-badge-bg: #6b728084;
+
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-background-secondary: var(--background-secondary);
+  --color-background-main-content: var(--background-main-content);
+  --color-surface: var(--color-surface);
+  --color-border: var(--color-border);
+  --color-primary: var(--color-primary);
+  --color-muted: var(--color-muted);
+  /* ==== Badge  ==== */
+  --color-primary-badge: var(--color-primary-badge);
+  --color-success-badge: var(--color-success-badge);
+  --color-danger-badge: var(--color-danger-badge);
+  --color-warning-badge: var(--color-warning-badge);
+  --color-muted-badge: var(--color-muted-badge);
+  
+  --color-primary-badge-bg: var(--color-primary-badge-bg);
+  --color-success-badge-bg: var(--color-success-badge-bg);
+  --color-danger-badge-bg: var(--color-danger-badge-bg);
+  --color-warning-badge-bg: var(--color-warning-badge-bg);
+  --color-muted-badge-bg: var(--color-muted-badge-bg);
+  
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
