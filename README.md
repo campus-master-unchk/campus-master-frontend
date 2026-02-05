@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Voici le fichier `README.md` spécifiquement optimisé pour ta partie **Frontend (Next.js)**. Il met en avant ton architecture de dossiers, la gestion des rôles et la configuration des images.
 
-## Getting Started
+---
 
-First, run the development server:
+# 💻 CampusMaster Frontend - Next.js 14+
+
+L'interface utilisateur de la plateforme **CampusMaster**, développée avec **Next.js** (App Router). Cette application offre une expérience fluide, réactive et sécurisée pour les étudiants, les enseignants et les administrateurs.
+
+## 🚀 Technologies Utilisées
+
+* **Framework** : [Next.js 16](https://nextjs.org/) (App Router).
+* **Langage** : TypeScript.
+* **Styling** : Tailwind CSS + Lucide Icons / React Icons.
+* **Gestion de formulaires** : React Hook Form + Zod (Validation).
+* **Communication API** : Axios.
+* **Notifications UI** : Sonner.
+
+---
+
+## 📦 Installation
+
+### 1. Prérequis
+
+* Node.js 18.17 ou supérieur
+* NPM ou Yarn
+
+### 2. Initialisation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Cloner le projet
+git clone [URL_DU_REPO_FRONT]
+cd campus-master-frontend
+
+# Installer les dépendances
+npm install
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. Configuration de l'environnement (`.env.local`)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Créez un fichier `.env.local` à la racine du projet :
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+# URL de base de l'API Laravel
+NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000
 
-## Learn More
+# Domaines autorisés pour l'optimisation des images Next.js
+NEXT_PUBLIC_API_IMAGE_DOMAINS=127.0.0.1,localhost
 
-To learn more about Next.js, take a look at the following resources:
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🏗️ Structure du Projet (App Router)
 
-## Deploy on Vercel
+Le projet utilise une organisation par groupes de routes pour gérer les différents types d'utilisateurs :
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+* **`app/`** :
+* `page.tsx/` : Login, mot de passe oublié, réinitialisation.
+* `admin/` : Gestion des utilisateurs, modules, analytics.
+* `teacher/` : Gestion des cours, devoirs et notations.
+* `student/` : Consultation des cours, dépôts et notes.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+* **`components/`** : Composants UI réutilisables (Sidebars, Tables, StatsCards).
+* **`services/`** : Logique d'appel API (Axios instances, AuthService).
+* **`middleware.ts`** : Protection des routes et redirection par `user_type`.
+* **`types/`** : Interfaces TypeScript pour une application robuste.
+
+---
+
+## 🚀 Commandes Utiles
+
+* **Développement** : `npm run dev` (Lancement sur `http://localhost:3000`)
+* **Build Production** : `npm run build`
+* **Analyse de type** : `npm run lint`
+
+---
+
+## 📈 Fonctionnalités Implémentées
+
+* ✅ Système de thèmes (Sombre/Clair).
+* ✅ Tableaux de bord dynamiques (Recharts).
+* ✅ Gestion des formulaires avec retour d'erreurs en temps réel.
+* ✅ Toasts de notification pour chaque action utilisateur.
+
+---
+
+**Souhaites-tu que nous travaillions maintenant sur le composant "Dashboard Header" qui affiche le profil de l'utilisateur et le sélecteur de thème ?**
