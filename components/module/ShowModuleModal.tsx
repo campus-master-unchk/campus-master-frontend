@@ -1,5 +1,5 @@
 "use client";
-
+import Image from "next/image";
 import { Module, Department, Level, Speciality } from "@/types/academic";
 
 interface Props {
@@ -23,7 +23,7 @@ export default function ShowModuleModal({ module, departments, levels, specialit
         <p><strong>Département:</strong> {departments.find(d => d.id === module.department_id)?.name || '-'}</p>
         <p><strong>Niveau:</strong> {levels.find(l => l.id === module.level_id)?.name || '-'}</p>
         <p><strong>Spécialité:</strong> {specialities.find(s => s.id === module.specialty_id)?.name || '-'}</p>
-        {module.img_module_url && <img src={module.img_module_url} className="w-32 h-32 object-cover rounded mt-2" />}
+        {module.img_module_url && <Image src={process.env.NEXT_PUBLIC_API_BASE_URL + module.img_module_url} alt={module.name} width={100} height={100} unoptimized className="w-32 h-32 object-cover rounded mt-2" />}
 
         <div className="flex justify-end mt-4">
           <button onClick={onClose} className="px-4 py-2 border border-border rounded hover:bg-surface transition">Fermer</button>

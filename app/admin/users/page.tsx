@@ -1,183 +1,3 @@
-// // app/admin/utilisateurs/page.tsx
-// "use client";
-
-// import { useState } from 'react';
-// import Breadcrumb from "@/components/commun/Breadcrumb";
-// import PageHeader from "@/components/commun/PageHeader";
-// import UserTable from "@/components/admin/UserTable";
-// import UserFilters from "@/components/admin/UserFilters";
-// import AcademicFilters from "@/components/admin/AcademicFilters";
-// import { Plus } from "lucide-react";
-// import AddUserModal from "@/components/admin/modals/AddUserModal";
-// import ViewUserModal from "@/components/admin/modals/ViewUserModal";
-// import EditUserModal from "@/components/admin/modals/EditUserModal";
-// import StatusUserModal from "@/components/admin/modals/StatusUserModal";
-// import DeleteUserModal from "@/components/admin/modals/DeleteUserModal";
-// import { User as UserType, Filters } from "@/types/userType";
-// import { useModalManager } from "@/hooks/useModalManager";
-
-
-
-// export default function UtilisateursPage() {
-//   const [users, setUsers] = useState<UserType[]>([]);
-//   const [filters, setFilters] = useState<Filters>({
-//     role: 'all',
-//     status: 'all',
-//     search: '',
-//     department: '',
-//     specialty: '',
-//     level: ''
-//   });
-
-//   const {
-//     selectedUser,
-//     activeModal,
-//     openAddModal,
-//     openViewModal,
-//     openEditModal,
-//     openStatusModal,
-//     openDeleteModal,
-//     closeModal
-//   } = useModalManager();
-
-//   // Fonction wrapper pour setFilters
-//   const handleFilterChange = (newFilters: Filters) => {
-//     setFilters(newFilters);
-//   };
-
-//   // Fonctions de gestion des données
-//   const handleEditUser = (userData: Partial<UserType>) => {
-//     if (!userData.id) return;
-    
-//     setUsers(users.map(u => 
-//       u.id === userData.id ? { ...u, ...userData } as UserType : u
-//     ));
-//     closeModal();
-//   };
-
-//   const handleStatusChange = (userId: number, newStatus: UserType['status']) => {
-//     setUsers(users.map(u => 
-//       u.id === userId ? { ...u, status: newStatus } : u
-//     ));
-//     closeModal();
-//   };
-
-//   const handleDeleteUser = (userId: number) => {
-//     setUsers(users.filter(u => u.id !== userId));
-//     closeModal();
-//   };
-
-//   const handleAddUser = (newUser: Partial<UserType>) => {
-//     const newId = Math.max(...users.map(u => u.id), 0) + 1;
-    
-//     setUsers([
-//       ...users,
-//       {
-//         id: newId,
-//         first_name: newUser.first_name || '',
-//         last_name: newUser.last_name || '',
-//         email: newUser.email || '',
-//         user_type: newUser.user_type || 'student',
-//         status: 'active',
-//         created_at: new Date().toLocaleDateString('fr-FR'),
-//         ...newUser
-//       } as UserType
-//     ]);
-//     closeModal();
-//   };
-
-//   return (
-//     <div className="space-y-6">
-//       <Breadcrumb items={[
-//         { label: "Administration", href: "/admin" },
-//         { label: "Utilisateurs" }
-//       ]} />
-      
-//       <PageHeader 
-//         title="Gestion des Utilisateurs"
-//         subtitle="Gérez les étudiants, enseignants et administrateurs avec leurs affectations académiques"
-//         actions={
-//           <button 
-//             onClick={openAddModal}
-//             className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
-//           >
-//             <Plus className="w-4 h-4" />
-//             Ajouter un utilisateur
-//           </button>
-//         }
-//       />
-
-//       {/* Filtres généraux */}
-//       <UserFilters 
-//         filters={filters}
-//         onFilterChange={handleFilterChange}
-//       />
-
-//       {/* Filtres académiques */}
-//       <AcademicFilters
-//         departments={departments}
-//         specialties={specialties}
-//         levels={levels}
-//         filters={filters}
-//         onFilterChange={handleFilterChange}
-//       />
-      
-//       {/* Tableau des utilisateurs */}
-//       <div className="bg-surface border border-border rounded-lg overflow-hidden">
-//         <UserTable 
-//           users={users}
-//           filters={filters}
-//           onView={openViewModal}
-//           onEdit={openEditModal}
-//           onStatusChange={openStatusModal}
-//           onDelete={openDeleteModal}
-//         />
-//       </div>
-
-//       {/* Modales */}
-//       <AddUserModal 
-//         isOpen={activeModal === 'add'}
-//         onClose={closeModal}
-//       />
-      
-//       {selectedUser && (
-//         <>
-//           <ViewUserModal
-//             isOpen={activeModal === 'view'}
-//             onClose={closeModal}
-//             user={selectedUser}
-//           />
-          
-//           <EditUserModal
-//             isOpen={activeModal === 'edit'}
-//             onClose={closeModal}
-//             user={selectedUser}
-//             onSave={handleEditUser}
-//             departments={departments}
-//             specialties={specialties}
-//             levels={levels}
-//           />
-          
-//           <StatusUserModal
-//             isOpen={activeModal === 'status'}
-//             onClose={closeModal}
-//             user={selectedUser}
-//             onStatusChange={handleStatusChange}
-//           />
-          
-//           <DeleteUserModal
-//             isOpen={activeModal === 'delete'}
-//             onClose={closeModal}
-//             user={selectedUser}
-//             onDelete={handleDeleteUser}
-//           />
-//         </>
-//       )}
-//     </div>
-//   );
-// }
-
-
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
@@ -206,8 +26,6 @@ export default function UserPage() {
 
   const { users, fetchUsers ,createUser, updateUser, toggleStatus, loading: loadingUsers} = useUserAdminStore();
 
-
-
   const [search, setSearch] = useState("");
   const [role, setRole] = useState<"teacher" | "student" | null>(null);
   const [status, setStatus] = useState<"active" | "inactive" | null>(null);
@@ -233,12 +51,13 @@ export default function UserPage() {
         || u.email.toLowerCase().includes(search.toLowerCase());
       const matchRole = !role || u.user_type === role;
       const matchStatus = !status || u.status === status;
-      const matchDepartment = !departmentId || (u as any).department_id === departmentId;
-      const matchLevel = !levelId || (u as any).level_id === levelId;
-      const matchSpeciality = !specialityId || (u as any).speciality_id === specialityId;
+      const matchDepartment = !departmentId || (u.student || u.teacher as any).department_id === departmentId;
+      const matchLevel = !levelId || (u.student as any).level_id === levelId;
+      const matchSpeciality = !specialityId || (u.student as any).speciality_id === specialityId;
       return matchSearch && matchRole && matchStatus && matchDepartment && matchLevel && matchSpeciality;
     });
   }, [users, search, role, status, departmentId, levelId, specialityId]);
+
 
   const handleAdd = () => { setSelected(null); setIsModalOpen(true); };
   const handleEdit = (user: User) => { setSelected(user); setIsModalOpen(true); };

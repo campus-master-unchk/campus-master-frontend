@@ -73,7 +73,7 @@ export const useAnnouncementStore = create<AnnouncementState>((set, get) => ({
         announcements: get().announcements.map(a => a.id === id ? updated : a),
       });
       toast.success(
-        updated.status === 'published'
+        updated.state === 'published'
           ? 'Annonce publiée'
           : 'Annonce mise en brouillon'
       );

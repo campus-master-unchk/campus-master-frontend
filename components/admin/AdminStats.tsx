@@ -1,36 +1,46 @@
-import { Users, BookOpen, GraduationCap, TrendingUp } from "lucide-react";
+import { Users, BookOpen, GraduationCap, TrendingUp, Book } from "lucide-react";
+import { PiChalkboardTeacherBold, PiStudentBold } from "react-icons/pi";
 import Card from "@/components/ui/Card";
+import { Analytics } from "@/types/analyticsType";
 
-export default function AdminStats() {
+interface AdminStatsProps {
+  totalStudents: number;
+  totalTeachers: number;
+  totalModules: number;
+  totalCourses: number;
+}
+
+export default function AdminStats({ totalStudents, totalTeachers, totalModules, totalCourses }: AdminStatsProps) {
   const stats = [
     {
-      title: "Utilisateurs actifs",
-      value: "1,248",
-      icon: <Users className="w-5 h-5 text-blue-600" />,
+      title: "Étudiants",
+      value: totalStudents,
+      icon: <PiStudentBold className="w-5 h-5 text-blue-600" />,
       change: "+12% ce mois",
       color: "bg-blue-50 dark:bg-blue-900/20"
     },
     {
-      title: "Cours publiés",
-      value: "156",
-      icon: <BookOpen className="w-5 h-5 text-green-600" />,
-      change: "+5 cette semaine",
-      color: "bg-green-50 dark:bg-green-900/20"
+      title: "Professeurs",
+      value: totalTeachers,
+      icon: <PiChalkboardTeacherBold className="w-5 h-5 text-blue-600" />,
+      change: "+12% ce mois",
+      color: "bg-success-badge-bg"
     },
     {
-      title: "Taux de réussite",
-      value: "89.2%",
-      icon: <GraduationCap className="w-5 h-5 text-amber-600" />,
+      title: "Modules",
+      value: totalModules,
+      icon: <Book className="w-5 h-5 text-amber-600" />,
       change: "+2.3% vs dernier trimestre",
       color: "bg-amber-50 dark:bg-amber-900/20"
     },
     {
-      title: "Engagement",
-      value: "74%",
-      icon: <TrendingUp className="w-5 h-5 text-purple-600" />,
-      change: "-3.1% à surveiller",
-      color: "bg-purple-50 dark:bg-purple-900/20"
-    }
+      title: "Cours publiés",
+      value: totalCourses,
+      icon: <BookOpen className="w-5 h-5 text-green-600" />,
+      change: "+5 cette semaine",
+      color: "bg-green-50 dark:bg-green-900/20"
+    },
+    
   ];
 
   return (

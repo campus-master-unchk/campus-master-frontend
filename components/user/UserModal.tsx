@@ -20,6 +20,7 @@ interface FormValues {
     last_name: string;
     email: string;
     user_type: UserRole;
+    status: string;
     password?: string;
     department_id?: number;
     level_id?: number;
@@ -33,6 +34,7 @@ export default function UserModal({ user, departments, levels, specialities, onC
             last_name: "",
             email: "",
             user_type: "student",
+            status: "active",
             password: "",
             department_id: undefined,
             level_id: undefined,
@@ -49,6 +51,7 @@ export default function UserModal({ user, departments, levels, specialities, onC
                 last_name: user.last_name,
                 email: user.email,
                 user_type: user.user_type,
+                status: user.status,
                 department_id: (user as any).department_id,
                 level_id: (user as any).level_id,
                 specialty_id: (user as any).specialty_id,
@@ -59,6 +62,7 @@ export default function UserModal({ user, departments, levels, specialities, onC
                 last_name: "",
                 email: "",
                 user_type: "student",
+                status: "active",
                 department_id: undefined,
                 level_id: undefined,
                 specialty_id: undefined,
@@ -101,6 +105,14 @@ export default function UserModal({ user, departments, levels, specialities, onC
                             {...register("email", { required: "L'email est requis" })}
                             className={`w-full border rounded px-3 py-2 ${errors.email ? "border-danger" : "border-border"}`}
                         />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm text-muted mb-1">Status</label>
+                        <select {...register("status")} className="w-full border rounded px-3 py-2">
+                            <option value="active">Actif</option>
+                            <option value="inactive">Inactif</option>
+                        </select>
                     </div>
 
                     <div>

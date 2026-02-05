@@ -2,40 +2,20 @@
 
 import { useState } from 'react';
 import { 
-  User, 
+  User as UserIcon, 
   Mail, 
-  Calendar, 
   Shield,
-  MoreVertical,
   CheckCircle,
-  XCircle
+  XCircle,
 } from "lucide-react";
-import Card from "@/components/ui/Card";
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  role: 'student' | 'teacher' | 'admin';
-  joined: string;
-  status: 'active' | 'inactive' | 'pending';
-}
+import { User } from '@/types/userType';
 
 interface UserTableProps {
   limit?: number;
+  users?: User[];
 }
 
-export default function UserTableRecents({ limit }: UserTableProps) {
-  const [users, setUsers] = useState<User[]>([
-    { id: 1, name: "Jean Dupont", email: "jean.dupont@campus.fr", role: 'student', joined: "15/09/2024", status: 'active' },
-    { id: 2, name: "Prof. Martin Dubois", email: "martin.dubois@campus.fr", role: 'teacher', joined: "01/09/2024", status: 'active' },
-    { id: 3, name: "Marie Curie", email: "marie.curie@campus.fr", role: 'student', joined: "20/09/2024", status: 'active' },
-    { id: 4, name: "Admin Sophie", email: "admin@campus.fr", role: 'admin', joined: "01/08/2024", status: 'active' },
-    { id: 5, name: "Prof. Sophie Laurent", email: "sophie.laurent@campus.fr", role: 'teacher', joined: "05/09/2024", status: 'pending' },
-    { id: 6, name: "Pierre Martin", email: "pierre.martin@campus.fr", role: 'student', joined: "10/09/2024", status: 'inactive' },
-  ]);
-
-  const displayedUsers = limit ? users.slice(0, limit) : users;
+export default function UserTableRecents({ limit, users }: UserTableProps) {
 
   const getRoleColor = (role: string) => {
     switch(role) {
@@ -58,9 +38,9 @@ export default function UserTableRecents({ limit }: UserTableProps) {
   const getRoleIcon = (role: string) => {
     switch(role) {
       case 'admin': return <Shield className="w-3 h-3" />;
-      case 'teacher': return <User className="w-3 h-3" />;
-      case 'student': return <User className="w-3 h-3" />;
-      default: return <User className="w-3 h-3" />;
+      case 'teacher': return <UserIcon className="w-3 h-3" />;
+      case 'student': return <UserIcon className="w-3 h-3" />;
+      default: return <UserIcon className="w-3 h-3" />;
     }
   };
 
@@ -75,15 +55,15 @@ export default function UserTableRecents({ limit }: UserTableProps) {
           </tr>
         </thead>
         <tbody>
-          {displayedUsers.map((user) => (
+          {users?.map((user) => (
             <tr key={user.id} className="border-b border-border hover:bg-surface-hover transition-colors">
               <td className="py-3 px-4">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                    <User className="w-4 h-4 text-primary" />
+                    <UserIcon className="w-4 h-4 text-primary" />
                   </div>
                   <div>
-                    <p className="font-medium text-foreground">{user.name}</p>
+                    <p className="font-medium text-foreground">{user.first_name + " " + user.last_name}</p>
                     <div className="flex items-center gap-1 text-xs text-muted">
                       <Mail className="w-3 h-3" />
                       <span>{user.email}</span>
@@ -93,12 +73,11 @@ export default function UserTableRecents({ limit }: UserTableProps) {
               </td>
               <td className="py-3 px-4">
                 <div className="flex items-center gap-2">
-                  <div className={`px-2 py-1 rounded-md text-xs font-medium ${getRoleColor(user.role)}`}>
+                  <div className={`px-2 py-1 rounded-md text-xs font-medium ${getRoleColor(user.user_type)}`}>
                     <div className="flex items-center gap-1">
-                      {getRoleIcon(user.role)}
+                      {getRoleIcon(user.user_type)}
                       <span>
-                        {user.role === 'admin' ? 'Administrateur' : 
-                         user.role === 'teacher' ? 'Enseignant' : 'Étudiant'}
+                        {user.user_type === 'teacher' ? 'Enseignant' : 'Étudiant'}
                       </span>
                     </div>
                   </div>
@@ -106,10 +85,10 @@ export default function UserTableRecents({ limit }: UserTableProps) {
               </td>
               <td className="py-3 px-4">
                 <div className="flex items-center gap-2">
-                  {getStatusIcon(user.status)}
+                  {getStatusIcon(user?.status)}
                   <span className="text-sm capitalize">
-                    {user.status === 'active' ? 'Actif' : 
-                     user.status === 'inactive' ? 'Inactif' : 'En attente'}
+                    {user?.status === 'active' ? 'Actif' : 
+                     user?.status === 'inactive' ? 'Inactif' : 'En attente'}
                   </span>
                 </div>
               </td>

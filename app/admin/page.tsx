@@ -1,11 +1,22 @@
+"use client";
+import { useEffect } from "react";
 import Breadcrumb from "@/components/commun/Breadcrumb";
 import PageHeader from "@/components/commun/PageHeader";
 import AdminStats from "@/components/admin/AdminStats";
 import RecentActivity from "@/components/admin/RecentActivity";
 import UserTable from "@/components/admin/UserTable";
 import UserTableRecents from "@/components/admin/UserTableRecents";
+import { useAnalyticsStore } from "@/store/admin/analytic.store";
+import Link from "next/link";
 
 export default function AdminDashboardPage() {
+
+  const { analytics, loading, fetchAnalytics } = useAnalyticsStore();
+
+  useEffect(() => {
+    fetchAnalytics();
+  }, []);
+
   return (
     <div className="space-y-6">
       {/* Breadcrumb */}
@@ -23,7 +34,7 @@ export default function AdminDashboardPage() {
       />
 
       {/* Stats Cards */}
-      <AdminStats />
+      <AdminStats totalStudents={analytics.total_students} totalTeachers={analytics.total_teachers} totalModules={analytics.total_modules} totalCourses={analytics.total_courses} />
 
       {/* Two Columns Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -36,11 +47,11 @@ export default function AdminDashboardPage() {
             <h3 className="text-lg font-semibold text-foreground">
               Utilisateurs récents
             </h3>
-            <button className="text-sm text-primary hover:underline">
+            <Link href="/admin/users" className="text-sm text-primary hover:underline">
               Voir tout
-            </button>
+            </Link>
           </div>
-          <UserTableRecents limit={5} />
+          <UserTableRecents users={analytics.recent_users} limit={5} />
         </div>
       </div>
     </div>

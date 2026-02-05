@@ -3,7 +3,7 @@ import { ColumnConfig, ActionConfig } from "@/components/ui/Table/types";
 
 import { User } from "@/types/userType";
 import { Department, Level, Speciality } from "@/types/academic";
-import { Pencil, Trash2, Eye, GraduationCap, BookOpen, Shield, Mail, Hash } from "lucide-react";
+import { Pencil, Trash2, Eye, GraduationCap, BookOpen, Shield, Mail, Hash, CheckCircle, XCircle } from "lucide-react";
 
 export function getUserColumns(departments: Department[], levels: Level[], specialities: Speciality[]): ColumnConfig<User>[] {
   return [
@@ -13,11 +13,10 @@ export function getUserColumns(departments: Department[], levels: Level[], speci
       width: '30%',
       render: (user: User) => (
         <div className="flex items-center gap-3">
-          <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-            user.user_type === 'student' ? 'bg-success-badge-bg' :
-            user.user_type === 'teacher' ? 'bg-primary-badge-bg ' :
-            'bg-warning-badge-bg'
-          }`}>
+          <div className={`w-10 h-10 rounded-full flex items-center justify-center ${user.user_type === 'student' ? 'bg-success-badge-bg' :
+              user.user_type === 'teacher' ? 'bg-primary-badge-bg ' :
+                'bg-warning-badge-bg'
+            }`}>
             {user.user_type === 'student' ? (
               <GraduationCap className="w-5 h-5 text-success-badge" />
             ) : user.user_type === 'teacher' ? (
@@ -53,22 +52,40 @@ export function getUserColumns(departments: Department[], levels: Level[], speci
 
         return (
           <div className="space-y-1">
-            <div className={`px-3 py-1 rounded-full text-xs font-medium ${
-              user.user_type === 'student' ? 'bg-success-badge-bg text-success-badge ' :
-              user.user_type === 'teacher' ? 'bg-primary-badge-bg text-primary-badge' :
-              'bg-danger-badge-bg text-danger-badge '
-            }`}>
+            <div className={`px-3 py-1 rounded-full text-xs font-medium ${user.user_type === 'student' ? 'bg-success-badge-bg text-success-badge ' :
+                user.user_type === 'teacher' ? 'bg-primary-badge-bg text-primary-badge' :
+                  'bg-danger-badge-bg text-danger-badge '
+              }`}>
               {getRoleText()}
             </div>
           </div>
         );
       }
     },
-    // {key: "first_name", header: "Prénom", render: (user: User) => user.first_name },
-    // { key: "last_name", header: "Nom", render: (user: User) => user.last_name },
-    // { key: "email", header: "Email", render: (user: User) => user.email },
-    // { key: "user_type", header: "Rôle", render: (user: User) => user.user_type },
-    { key: "status", header: "Statut", render: (user: User) => user.status || "-" },
+    {
+      key: "status", header: "Statut", render: (user: User) => {
+        const getStatusIcon = (status: string) => {
+          switch (status) {
+            case 'active': return <CheckCircle className="w-3 h-3 text-green-500" />;
+            case 'inactive': return <XCircle className="w-3 h-3 text-red-500" />;
+            case 'pending': return <div className="w-3 h-3 rounded-full border-2 border-amber-500 border-t-transparent animate-spin" />;
+            default: return null;
+          }
+        };
+        return (
+          <div className="flex items-center gap-2">
+            <div className={`px-2 py-1 rounded-md text-xs font-medium`}>
+              <div className="flex items-center gap-1">
+                {getStatusIcon(user.status)}
+                <span>
+                  {user.status === 'active' ? 'Actif' : 'Inactif'}
+                </span>
+              </div>
+            </div>
+          </div>
+        );
+      }
+    },
     {
       key: "department_id",
       header: "Département",
