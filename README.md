@@ -1,4 +1,4 @@
-# 💻 CampusMaster Frontend - Next.js 14+
+# 💻 CampusMaster Frontend - Next.js 16+
 
 L'interface utilisateur de la plateforme **CampusMaster**, développée avec **Next.js** (App Router). Cette application offre une expérience fluide, réactive et sécurisée pour les étudiants, les enseignants et les administrateurs.
 
@@ -70,16 +70,3 @@ Le projet utilise une organisation par groupes de routes pour gérer les différ
 * **Développement** : `npm run dev` (Lancement sur `http://localhost:3000`)
 * **Build Production** : `npm run build`
 * **Analyse de type** : `npm run lint`
-
----
-
-## 📈 Fonctionnalités Implémentées
-
-* ✅ Système de thèmes (Sombre/Clair).
-* ✅ Tableaux de bord dynamiques (Recharts).
-* ✅ Gestion des formulaires avec retour d'erreurs en temps réel.
-* ✅ Toasts de notification pour chaque action utilisateur.
-
----
-
-**Souhaites-tu que nous travaillions maintenant sur le composant "Dashboard Header" qui affiche le profil de l'utilisateur et le sélecteur de thème ?**
