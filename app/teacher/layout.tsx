@@ -10,7 +10,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <RoleGuard allowedRole="teacher">
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <StudentHeader navItems={TeacherNav} user={{ name: "John Doe", role: "Teacher", initials: "JD" }} />
+      <StudentHeader navItems={TeacherNav} user_type="teacher" />
 
       {/* Main Content */}
       <main className="pt-20 bg-background-main-content">

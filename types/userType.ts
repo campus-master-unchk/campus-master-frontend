@@ -46,6 +46,17 @@ export const authSchema = z
     path: ["password_confirmation"],
   });
 
+export interface updateProfile {
+  email?: string,
+  first_name: string;
+  last_name: string;
+}
+
+export interface updateMypassword {
+  current_password: string;
+  new_password: string;
+  password_confirmation: string
+}
 
 //=============================================//
 //=========== Interface utilisateur ===========//

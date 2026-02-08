@@ -7,17 +7,14 @@ import { Menu, X, Bell, ChevronDown } from "lucide-react"
 import { HiOutlineAcademicCap } from "react-icons/hi"
 import ThemeToggleIcon from "@/components/ui/ThemeToggleIcon"
 import { NavItem } from "@/types/navigation"
+import ProfileDropdown from "../commun/ProfileDropdown"
 
 type HeaderProps = {
   navItems: NavItem[]
-  user: {
-    name: string
-    role: string
-    initials: string
-  }
+  user_type: 'student'|'teacher'
 }
 
-export default function Header({ navItems, user }: HeaderProps) {
+export default function Header({ navItems, user_type }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const pathname = usePathname()
 
@@ -75,18 +72,8 @@ export default function Header({ navItems, user }: HeaderProps) {
 
             <ThemeToggleIcon />
 
-            <button className="hidden md:flex items-center gap-3 px-3 py-2 rounded-md hover:bg-surface-hover">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
-                <span className="text-white text-sm font-semibold">
-                  {user.initials}
-                </span>
-              </div>
-              <div className="text-left hidden lg:block">
-                <p className="text-sm font-medium">{user.name}</p>
-                <p className="text-xs text-muted">{user.role}</p>
-              </div>
-              <ChevronDown className="w-4 h-4 text-muted hidden lg:block" />
-            </button>
+                            <ProfileDropdown user_type={user_type} />
+            
           </div>
         </nav>
 

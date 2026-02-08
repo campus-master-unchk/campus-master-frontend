@@ -2,6 +2,6 @@
 
 import SettingPage from "@/components/commun/settingPage/SettingPage"
 
-export default function ProfilPageStudent() {
-    return <SettingPage />
+export default function ProfilPageAdmin() {
+     return <SettingPage />
 }
